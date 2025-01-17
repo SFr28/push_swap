@@ -93,5 +93,5 @@ void	ft_start_push(t_pile **pile_a, t_pile **pile_b)
 		*pile_a = (*pile_a)->next;
 	}
 }
-
+//pas besoin de i puisque rotate envoie juste le premier nombre en bas
 //calculer cout de deplacement pour chaque entite...
