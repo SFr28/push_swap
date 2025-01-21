@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:27:21 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/21 13:53:56 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:10:10 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,12 @@ void	ft_sort_4(t_pile **pile_a, t_pile **pile_b)
 void	ft_sort_more(t_pile **pile_a, t_pile **pile_b)
 {
 	t_pile	*min;
-	t_pile	*max;
-	t_pile	*max_b;
 	int		size;
 
 	size = ft_pilesize(*pile_a);
-	max = ft_find_max(pile_a);
 	ft_start_push(pile_a, pile_b, size);
-	max_b = ft_find_max(pile_b);
-	if (max_b == max)
-		max_b = NULL;
 	ft_sort_3(pile_a);
-	ft_turk(pile_a, pile_b, max_b, size);
+	ft_turk(pile_a, pile_b, size);
 	min = ft_find_min(pile_a);
 	if (min->position > size / 2)
 	{
@@ -107,16 +101,12 @@ void	ft_start_push(t_pile **pile_a, t_pile **pile_b, int size)
 	}
 }
 
-void ft_turk(t_pile **pile_a, t_pile **pile_b, t_pile *max, int size)
+void ft_turk(t_pile **pile_a, t_pile **pile_b, int size)
 {
 	t_pile	*first_b;
 	t_pile	*node;
-	int		size_b;
-	int		size_a;
 
 	first_b = *pile_b;
-	size_b = ft_pilesize(*pile_b);
-	size_a = ft_pilesize(*pile_a);
 	if (ft_pilesize(*pile_a) == size)
 		return ;
 	ft_position(pile_a, pile_b);
@@ -125,11 +115,11 @@ void ft_turk(t_pile **pile_a, t_pile **pile_b, t_pile *max, int size)
         ft_find_next_big(pile_a, first_b);
         first_b = first_b->next;
     }
-	ft_cost(pile_a, pile_b, max);
+	ft_cost(pile_a, pile_b);
 	node = ft_find_cheapest(pile_b);
-	if ((size_a < size_b && node->position <= size_b / 2) || (size_a > size_b && node->target->position <= size_a / 2))
+	if (ft_choose(pile_a, pile_b, node) == 1)
 		ft_repush_r(pile_a, pile_b, node);
-	else if ((size_a < size_b && node->position > size_b / 2) || (size_a > size_b && node->target->position > size_a / 2))
+	else if (ft_choose(pile_a, pile_b, node) == 0)
 		ft_repush_rr(pile_a, pile_b, node);
-	ft_turk(pile_a, pile_b, max, size);
+	ft_turk(pile_a, pile_b, size);
 }

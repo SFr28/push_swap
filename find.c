@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:05:44 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/21 11:56:21 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 13:18:09 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,12 @@ t_pile	*ft_find_min(t_pile **pile)
 	return (temp);
 }
 
-void	ft_find_next_big(t_pile **pile, t_pile *node, t_pile *max_b)
+void	ft_find_next_big(t_pile **pile, t_pile *node)
 {
 	t_pile	*temp;
 	t_pile	*target;
 
 	temp = *pile;
-	max_b = NULL;
 	target = ft_find_max(pile);
 	if (node->nb > target->nb)
 		target = ft_find_min(pile);
