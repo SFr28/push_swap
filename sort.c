@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:27:21 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/21 13:12:56 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 13:45:03 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,11 @@ void	ft_start_push(t_pile **pile_a, t_pile **pile_b, int size)
 	int			i;
 	t_pile		*temp;
 
-	temp = *pile_a;
 	i = 1;
 	mean = ft_mean(pile_a);
 	while (i <= size - 3)
 	{
+		temp = *pile_a;
 		if (temp->nb > mean)
 		{
 			push(pile_b, pile_a, 'b', 1);
@@ -111,20 +111,16 @@ void ft_turk(t_pile **pile_a, t_pile **pile_b, t_pile *max, int size)
 {
 	t_pile	*first_b;
 	t_pile	*node;
-	t_pile	*temp_max_b;
 	int		size_b;
 
 	first_b = *pile_b;
-	temp_max_b = ft_find_max(pile_b);
-	if (temp_max_b != max)
-		temp_max_b = NULL;
 	size_b = ft_pilesize(*pile_b);
 	if (ft_pilesize(*pile_a) == size)
 		return ;
 	ft_position(pile_a, pile_b);
 	while (first_b != NULL)
     {
-        ft_find_next_big(pile_a, first_b, temp_max_b);
+        ft_find_next_big(pile_a, first_b);
         first_b = first_b->next;
     }
 	ft_cost(pile_a, pile_b, max);
