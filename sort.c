@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:27:21 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/21 13:45:03 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 13:53:56 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,11 @@ void ft_turk(t_pile **pile_a, t_pile **pile_b, t_pile *max, int size)
 	t_pile	*first_b;
 	t_pile	*node;
 	int		size_b;
+	int		size_a;
 
 	first_b = *pile_b;
 	size_b = ft_pilesize(*pile_b);
+	size_a = ft_pilesize(*pile_a);
 	if (ft_pilesize(*pile_a) == size)
 		return ;
 	ft_position(pile_a, pile_b);
@@ -125,9 +127,9 @@ void ft_turk(t_pile **pile_a, t_pile **pile_b, t_pile *max, int size)
     }
 	ft_cost(pile_a, pile_b, max);
 	node = ft_find_cheapest(pile_b);
-	if (node->position <= size_b / 2)
+	if ((size_a < size_b && node->position <= size_b / 2) || (size_a > size_b && node->target->position <= size_a / 2))
 		ft_repush_r(pile_a, pile_b, node);
-	if (node->position > size_b / 2)
+	else if ((size_a < size_b && node->position > size_b / 2) || (size_a > size_b && node->target->position > size_a / 2))
 		ft_repush_rr(pile_a, pile_b, node);
 	ft_turk(pile_a, pile_b, max, size);
 }
