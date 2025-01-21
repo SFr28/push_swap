@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:05:44 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/21 11:43:32 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:56:21 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ void	ft_find_next_big(t_pile **pile, t_pile *node, t_pile *max_b)
 	t_pile	*target;
 
 	temp = *pile;
+	max_b = NULL;
 	target = ft_find_max(pile);
-	if (node == max_b && max_b->next != NULL)
-		target = *pile;
+	if (node->nb > target->nb)
+		target = ft_find_min(pile);
 	while (temp != NULL)
 	{
 		if (temp->nb > node->nb && temp->nb < target->nb)
