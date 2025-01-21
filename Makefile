@@ -13,7 +13,7 @@
 NAME = push_swap
 
 SRCS = ./srcs/push_swap.c ./srcs/pile_functions.c ./srcs/arg_to_pile.c ./srcs/errors.c \
-		./srcs/instruction.c ./srcs/ft_atol.c ./srcs/sort.c ./srcs/find.c
+		./srcs/instruction.c ./srcs/ft_atol.c ./srcs/sort.c ./srcs/find.c ./srcs/utils.c
 OBJS = $(SRCS:.c=.o)
 HEADER = -I ./includes/
 

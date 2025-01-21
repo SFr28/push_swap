@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   instruction.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfraslin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:18:35 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/10 14:58:24 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:52:24 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_pile	*swap(t_pile **pile, char c, int i)
 {
 	t_pile	*temp;
 
+	if (*pile == NULL)
+		return (*pile);
 	temp = *pile;
 	temp->position = 2;
 	*pile = (*pile)->next;
@@ -66,12 +68,14 @@ t_pile	*rotate(t_pile **pile, char c, int i)
 {
 	t_pile	*temp;
 
+	if (*pile == NULL || (*pile)->next == NULL)
+		return (*pile);
 	temp = *pile;
 	temp->position = ft_pilesize(*pile);
-	ft_pile_add_back(pile, temp);
 	*pile = (*pile)->next;
 	(*pile)->position = 1;
 	temp->next = NULL;
+	ft_pile_add_back(pile, temp);
 	if (i == 1)
 	{
 		ft_putchar_fd('r', 1);
@@ -82,31 +86,31 @@ t_pile	*rotate(t_pile **pile, char c, int i)
 }
 
 //dernier element devient le premier
-t_pile	*reverse_r(t_pile **pile, char c, int i)
+void	reverse_r(t_pile **pile, char c, int i)
 {
 	t_pile	*temp;
 	t_pile	*first;
 	int		j;
 	int		size;
 
+	if (*pile == NULL || (*pile)->next == NULL)
+		return ;
 	size = ft_pilesize(*pile);
 	j = 0;
-	first = *pile;
 	temp = ft_pilelast(*pile);
-	temp->next = first;
+	temp->next = (*pile);
 	ft_pile_add_front(pile, temp);
 	first = *pile;
 	while (++j < size)
 	{
-		(*pile)->position = j;
-		*pile = (*pile)->next;
+		first->position = j;
+		first = first->next;
 	}
-	(*pile)->next = NULL;
+	first->next = NULL;
 	if (i == 1)
 	{
 		ft_putstr_fd("rr", 1);
 		ft_putchar_fd(c, 1);
 		ft_putchar_fd('\n', 1);
 	}
-	return (first);
 }

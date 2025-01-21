@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfraslin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:27:21 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/14 13:27:22 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:48:03 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ void	ft_sort_3(t_pile **pile)
 	last = ft_pilelast(*pile);
 	if ((*pile)->nb < second->nb && second->nb < last->nb)
 		return ;
-	if ((*pile)->nb > second->nb && (*pile)->nb > last->nb)
-		*pile = rotate(pile, 'a', 1);
-	second = (*pile)->next;
-	if ((*pile)->nb > second->nb)
-		swap(pile, 'a', 1);
 	if ((*pile)->nb < second->nb && second->nb > last->nb)
 	{
 		if ((*pile)->nb < last->nb)
@@ -34,8 +29,13 @@ void	ft_sort_3(t_pile **pile)
 			*pile = rotate(pile, 'a', 1);
 		}
 		if ((*pile)->nb > last->nb)
-			*pile = reverse_r(pile, 'a', 1);
+			reverse_r(pile, 'a', 1);
 	}
+	if ((*pile)->nb > second->nb && (*pile)->nb > last->nb)
+		*pile = rotate(pile, 'a', 1);
+	second = (*pile)->next;
+	if ((*pile)->nb > second->nb)
+		swap(pile, 'a', 1);
 }
 
 void	ft_sort_4(t_pile **pile_a, t_pile **pile_b)
@@ -46,52 +46,89 @@ void	ft_sort_4(t_pile **pile_a, t_pile **pile_b)
 	if (min->position == 2)
 		swap(pile_a, 'a', 1);
 	if (min->position == 4)
-		*pile_a = reverse_r(pile_a, 'a', 1);
+		reverse_r(pile_a, 'a', 1);
 	if (min->position == 3)
 	{
 		rotate(pile_a, 'a', 1);
 		rotate(pile_a, 'a', 1);
 	}
-	push(pile_b, pile_a, 'a', 1);
+	push(pile_b, pile_a, 'b', 1);
 	ft_sort_3(pile_a);
-	push(pile_a, pile_b, 'b', 1);
+	push(pile_a, pile_b, 'a', 1);
 }
 
 void	ft_sort_more(t_pile **pile_a, t_pile **pile_b)
 {
-	t_pile		*temp; //garder une adresse de pile_a comment ?
+	t_pile	*min;
+	t_pile	*max;
+	t_pile	*max_b;
+	int		size;
 
-	ft_start_push(pile_a, pile_b);
-	while (ft_pilesize(*pile_a) > 3)
-		push(pile_b, pile_a, 'a', 1);
+	size = ft_pilesize(*pile_a);
+	max = ft_find_max(pile_a);
+	ft_start_push(pile_a, pile_b, size);
+	max_b = ft_find_max(pile_b);
+	if (max_b == max)
+		max_b = NULL;
 	ft_sort_3(pile_a);
+	ft_turk(pile_a, pile_b, max_b, size);
+	min = ft_find_min(pile_a);
+	if (min->position > size / 2)
+	{
+		while (*pile_a != min)
+			reverse_r(pile_a, 'a', 1);
+	}
+	if (min->position <= size / 2)
+	{
+		while (*pile_a != min)
+			rotate(pile_a, 'a', 1);
+	}
 }
 
-void	ft_start_push(t_pile **pile_a, t_pile **pile_b)
+void	ft_start_push(t_pile **pile_a, t_pile **pile_b, int size)
 {
 	long int	mean;
 	int			i;
+	t_pile		*temp;
 
+	temp = *pile_a;
+	i = 1;
+	ft_position(&temp, NULL);
 	mean = ft_mean(pile_a);
-	i = 0;
-	while (*pile_a != NULL)
+	while (i <= size - 3)
 	{
-		if ((*pile_a)->nb >= mean && (*pile_a)->nb >= mean + (mean / 2))
-		{
-			if (i == 1)
-				rotate(pile_b, 'b', 1);
-			push(pile_b, pile_a, 'a', 1);
-			i = 0;
-		}
-		if ((*pile_a)->nb >= mean && (*pile_a)->nb <= mean + (mean / 2))
-		{
-			if (i == 0)
-				rotate(pile_b, 'b', 1);
-			push(pile_b, pile_a, 'a', 1);
-			i = 1;
-		}
-		*pile_a = (*pile_a)->next;
+		push(pile_b, pile_a, 'b', 1);
+		if (temp->nb > mean)
+			rotate(pile_b, 'b', 1);
+		i++;
 	}
 }
-//pas besoin de i puisque rotate envoie juste le premier nombre en bas
-//calculer cout de deplacement pour chaque entite...
+
+void ft_turk(t_pile **pile_a, t_pile **pile_b, t_pile *max, int size)
+{
+	t_pile	*first_b;
+	t_pile	*node;
+	t_pile	*temp_max_b;
+	int		size_b;
+
+	first_b = *pile_b;
+	temp_max_b = ft_find_max(pile_b);
+	if (temp_max_b != max)
+		temp_max_b = NULL;
+	size_b = ft_pilesize(*pile_b);
+	if (ft_pilesize(*pile_a) == size)
+		return ;
+	ft_position(pile_a, pile_b);
+	while (first_b != NULL)
+    {
+        ft_find_next_big(pile_a, first_b, temp_max_b);
+        first_b = first_b->next;
+    }
+	ft_cost(pile_a, pile_b, max);
+	node = ft_find_cheapest(pile_b);
+	if (node->position <= size_b / 2)
+		ft_repush_r(pile_a, pile_b, node);
+	if (node->position > size_b / 2)
+		ft_repush_rr(pile_a, pile_b, node);
+	ft_turk(pile_a, pile_b, max, size);
+}

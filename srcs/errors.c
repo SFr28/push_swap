@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfraslin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:23:51 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/10 15:05:55 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:42:48 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_error(int i)
 {
 	if (i == -1)
-		ft_putstr_fd("Error\nWrong data.\n", 2);
+		ft_putstr_fd("Error\n", 2);
 }
 
 t_pile	**ft_free_pile(t_pile **pile_a)

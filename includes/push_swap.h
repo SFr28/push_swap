@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfraslin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:12:03 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/09 18:33:49 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:05:13 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef	struct	s_pile
 {
 	long int		nb;
 	int				position;
+	int				cost;
 	struct s_pile	*next;
 	struct s_pile	*target;
 }	t_pile;
@@ -45,16 +46,25 @@ t_pile	**ft_free_pile(t_pile **pile_a);
 t_pile	*swap(t_pile **pile, char c, int i);
 void	push(t_pile **pile_1, t_pile **pile_2, char c, int i);
 t_pile	*rotate(t_pile **pile, char c, int i);
-t_pile	*reverse_r(t_pile **pile, char c, int i);
+void	reverse_r(t_pile **pile, char c, int i);
 
 void    ft_sort_3(t_pile **pile);
 void    ft_sort_4(t_pile **pile_a, t_pile **pile_b);
 void	ft_sort_more(t_pile **pile_a, t_pile **pile_b);
+void 	ft_turk(t_pile **pile_a, t_pile **pile_b, t_pile *max, int size);
 int		ft_is_sorted(t_pile **pile);
-void	ft_start_push(t_pile **pile_a, t_pile **pile_b);
+void	ft_start_push(t_pile **pile_a, t_pile **pile_b, int size);
+void    ft_repush_r(t_pile **pile_a, t_pile **pile_b, t_pile *node);
+void    ft_repush_rr(t_pile **pile_a, t_pile **pile_b, t_pile *node);
 
 t_pile  *ft_find_min(t_pile **pile);
 t_pile  *ft_find_max(t_pile **pile);
-void    ft_find_next_big(t_pile **pile, t_pile *node);
+void    ft_find_next_big(t_pile **pile, t_pile *node, t_pile *max_b);
+t_pile	*ft_find_cheapest(t_pile **pile);
+
+void    ft_position(t_pile **pile_a, t_pile **pile_b);
+void    ft_cost(t_pile **pile_a, t_pile **pile_b, t_pile *max);
+
+void	ft_print_pile(t_pile **pile); //enlever
 
 #endif

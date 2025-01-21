@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   min_max.c                                          :+:      :+:    :+:   */
+/*   find.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfraslin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:05:44 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/16 10:05:46 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:43:32 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@ t_pile	*ft_find_max(t_pile **pile)
 
 	temp = *pile;
 	first = *pile;
-	while (*pile != NULL)
+	while (first != NULL)
 	{
-		if ((*pile)->nb > temp->nb)
-			temp = *pile;
-		*pile = (*pile)->next;
+		if (first->nb > temp->nb)
+			temp = first;
+		first = first->next;
 	}
-	*pile = first;
 	return (temp);
 }
 
@@ -46,16 +45,36 @@ t_pile	*ft_find_min(t_pile **pile)
 	return (temp);
 }
 
-void	ft_find_next_big(t_pile **pile, t_pile *node)
+void	ft_find_next_big(t_pile **pile, t_pile *node, t_pile *max_b)
 {
 	t_pile	*temp;
+	t_pile	*target;
 
 	temp = *pile;
-	while (*pile != NULL)
+	target = ft_find_max(pile);
+	if (node == max_b && max_b->next != NULL)
+		target = *pile;
+	while (temp != NULL)
 	{
-		if ((*pile)->nb > node->nb && (*pile)->nb < temp->nb)
-			temp = *pile;
-		*pile = (*pile)->next;
+		if (temp->nb > node->nb && temp->nb < target->nb)
+			target = temp;
+		temp = temp->next;
 	}
-	node->target = temp;
+	node->target = target;
+}
+
+t_pile	*ft_find_cheapest(t_pile **pile)
+{
+	t_pile	*temp;
+	t_pile	*cheap;
+
+	temp = *pile;
+	cheap = *pile;
+	while (temp != NULL)
+	{
+		if (cheap->cost > temp->cost)
+			cheap = temp;
+		temp = temp->next;
+	}
+	return (cheap);
 }

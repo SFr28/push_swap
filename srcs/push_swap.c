@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sfraslin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:23:51 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/10 15:05:55 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:28:38 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int ac, char **av)
 
 	if (ac < 2 || (ac > 2 && av[1][0] == '\0'))
 	{
-		printf("Error\n");
+		ft_putstr_fd("Error\n", 2);
 		return (1);
 	}
 	i = 0;
@@ -36,40 +36,45 @@ int	main(int ac, char **av)
 	if (ft_arg_to_pile(ac, av, pile_a) == NULL)
 		return (1);
 	size = ft_pilesize(first);
-	test = first;
-	pile_a = &test;
 	if (ft_is_sorted(pile_a) == 1)
-	{
-		printf("Is sorted.\n");
 		return (0);
-	}
-	pile_a = &test;
 	if (size == 3)
 		ft_sort_3(pile_a);
 	if (size == 4)
 		ft_sort_4(pile_a, pile_b);
 	if (size > 4)
 		ft_sort_more(pile_a, pile_b);
-	pile_a = &test;
-	while (*pile_a!= NULL && i < size + 1)
-	{
-		printf("%li\n", (*pile_a)->nb);
-		(*pile_a) = (*pile_a)->next;
-		i++;
-	}
+	//ft_print_pile(pile_a);
 	ft_free_pile(pile_a);
 	return (0);
 }
 int	ft_is_sorted(t_pile **pile)
 {
-	t_pile	*temp;
+	t_pile	*first;
 
-	temp = *pile;
-	while (temp->next != NULL)
+	first = *pile;
+	while (first->next != NULL)
 	{
-		if (temp->nb > temp->next->nb)
+		if (first->nb > first->next->nb)
 			return (0);
-		temp = temp->next;
+		first = first->next;
 	}
 	return (1);
 }
+
+/*void	ft_print_pile(t_pile **pile)
+{
+	t_pile	*temp;
+	int		i;
+	int		size;
+
+	temp = *pile;
+	size = ft_pilesize(temp);
+	i = 0;
+	while (temp!= NULL && i < size + 1)
+	{
+		printf("%li\n", temp->nb);
+		(temp) = temp->next;
+		i++;
+	}
+}*/
