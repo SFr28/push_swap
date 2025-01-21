@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 13:27:21 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/21 15:37:11 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:09:04 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	ft_sort_more(t_pile **pile_a, t_pile **pile_b)
 	ft_start_push(pile_a, pile_b, size);
 	ft_sort_3(pile_a);
 	ft_turk(pile_a, pile_b, size);
+	// ft_position(pile_a, pile_b);
 	min = ft_find_min(pile_a);
 	if (min->position > size / 2)
 	{

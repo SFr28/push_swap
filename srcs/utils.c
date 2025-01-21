@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:23:51 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/21 15:41:00 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:04:53 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,26 +68,26 @@ void	ft_repush_same(t_pile **pile_a, t_pile **pile_b, t_pile *node)
 {
 	while (node->position != 1 && node->target->position != 1)
 	{
-        if (node->position <= ft_pilesize(*pile_b))
+        if (node->position <= (ft_pilesize(*pile_b) / 2))
         {
 		    rotate(pile_a, 'a', 0);
 		    rotate(pile_b, 'b', 0);
 		    ft_putstr_fd("rr\n", 1);
         }
-        else if (node->position > ft_pilesize(*pile_b))
+        else if (node->position > (ft_pilesize(*pile_b) / 2))
         {
-		reverse_r(pile_a, 'a', 0);
-		reverse_r(pile_b, 'b', 0);
-		ft_putstr_fd("rrr\n", 1);
+		    reverse_r(pile_a, 'a', 0);
+		    reverse_r(pile_b, 'b', 0);
+		    ft_putstr_fd("rrr\n", 1);
         }
 	}
-	while (node->position != 1 && node->position <= ft_pilesize(*pile_b))
+	while (node->position != 1 && node->position <= (ft_pilesize(*pile_b) / 2))
 		rotate(pile_b, 'b', 1);
-	while (node->target->position != 1 && node->target->position <= ft_pilesize(*pile_a))
+	while (node->target->position != 1 && node->target->position <= (ft_pilesize(*pile_a) / 2))
 		rotate(pile_a, 'a', 1);
-    while (node->position != 1 && node->position > ft_pilesize(*pile_b))
+    while (node->position != 1 && node->position > (ft_pilesize(*pile_b) / 2))
 		reverse_r(pile_b, 'b', 1);
-	while (node->target->position != 1 && node->target->position > ft_pilesize(*pile_b))
+	while (node->target->position != 1 && node->target->position > (ft_pilesize(*pile_a) / 2))
 		reverse_r(pile_a, 'a', 1);
     push(pile_a, pile_b, 'a', 1);
 }
@@ -97,17 +97,17 @@ void    ft_repush_diff(t_pile **pile_a, t_pile **pile_b, t_pile *node)
     
 	while (node->position != 1)
 	{
-        if (node->position <= ft_pilesize(*pile_b))
+        if (node->position <= (ft_pilesize(*pile_b) / 2))
 		    rotate(pile_b, 'b', 1);
-        if (node->position > ft_pilesize(*pile_b))
+        if (node->position > (ft_pilesize(*pile_b) / 2))
             reverse_r(pile_b, 'b', 1);
 	}
     while (node->target->position != 1)
     {
-        if (node->target->position <= ft_pilesize(*pile_a))
-		    rotate(pile_b, 'b', 1);
-        if (node->target->position > ft_pilesize(*pile_a))
-            reverse_r(pile_b, 'b', 1);
+        if (node->target->position <= (ft_pilesize(*pile_a) / 2))
+		    rotate(pile_a, 'b', 1);
+        if (node->target->position > (ft_pilesize(*pile_a) / 2))
+            reverse_r(pile_a, 'b', 1);
 	}
 	push(pile_a, pile_b, 'a', 1);
 }
