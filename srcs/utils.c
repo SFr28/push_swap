@@ -6,7 +6,7 @@
 /*   By: sfraslin <sfraslin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 18:23:51 by sfraslin          #+#    #+#             */
-/*   Updated: 2025/01/21 11:29:07 by sfraslin         ###   ########.fr       */
+/*   Updated: 2025/01/21 15:41:00 by sfraslin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void    ft_position(t_pile **pile_a, t_pile **pile_b)
         i++;
     }
 }
-//cout pour que les deux elements soient en haut de leur pile respective => position ou taille - position
-void    ft_cost(t_pile **pile_a, t_pile **pile_b, t_pile *max)
+
+void    ft_cost(t_pile **pile_a, t_pile **pile_b)
 {
     t_pile	*temp;
     int     size;
@@ -60,38 +60,68 @@ void    ft_cost(t_pile **pile_a, t_pile **pile_b, t_pile *max)
             temp->cost = temp->position + temp->target->position;
         if (temp->position > size / 2)
             temp->cost = size - temp->position + temp->target->position;
-        if (temp == max)
-            temp->cost = 214748364;
         temp = temp->next;
     }
 }
 
-void	ft_repush_r(t_pile **pile_a, t_pile **pile_b, t_pile *node)
+void	ft_repush_same(t_pile **pile_a, t_pile **pile_b, t_pile *node)
 {
 	while (node->position != 1 && node->target->position != 1)
 	{
-		rotate(pile_a, 'a', 0);
-		rotate(pile_b, 'b', 0);
-		ft_putstr_fd("rr\n", 1);
+        if (node->position <= ft_pilesize(*pile_b))
+        {
+		    rotate(pile_a, 'a', 0);
+		    rotate(pile_b, 'b', 0);
+		    ft_putstr_fd("rr\n", 1);
+        }
+        else if (node->position > ft_pilesize(*pile_b))
+        {
+		reverse_r(pile_a, 'a', 0);
+		reverse_r(pile_b, 'b', 0);
+		ft_putstr_fd("rrr\n", 1);
+        }
 	}
-	while (node->position != 1)
+	while (node->position != 1 && node->position <= ft_pilesize(*pile_b))
 		rotate(pile_b, 'b', 1);
-	while (node->target->position != 1)
+	while (node->target->position != 1 && node->target->position <= ft_pilesize(*pile_a))
 		rotate(pile_a, 'a', 1);
+    while (node->position != 1 && node->position > ft_pilesize(*pile_b))
+		reverse_r(pile_b, 'b', 1);
+	while (node->target->position != 1 && node->target->position > ft_pilesize(*pile_b))
+		reverse_r(pile_a, 'a', 1);
     push(pile_a, pile_b, 'a', 1);
 }
 
-void    ft_repush_rr(t_pile **pile_a, t_pile **pile_b, t_pile *node)
+void    ft_repush_diff(t_pile **pile_a, t_pile **pile_b, t_pile *node)
 {
-	while (node->position != 1 && node->target->position != 1)
-	{
-		reverse_r(pile_a, 'a', 0);
-		rotate(pile_b, 'b', 0);
-		ft_putstr_fd("rrr\n", 1);
-	}
+    
 	while (node->position != 1)
-		reverse_r(pile_b, 'b', 1);
-	while (node->target->position != 1)
-		reverse_r(pile_a, 'a', 1);
+	{
+        if (node->position <= ft_pilesize(*pile_b))
+		    rotate(pile_b, 'b', 1);
+        if (node->position > ft_pilesize(*pile_b))
+            reverse_r(pile_b, 'b', 1);
+	}
+    while (node->target->position != 1)
+    {
+        if (node->target->position <= ft_pilesize(*pile_a))
+		    rotate(pile_b, 'b', 1);
+        if (node->target->position > ft_pilesize(*pile_a))
+            reverse_r(pile_b, 'b', 1);
+	}
 	push(pile_a, pile_b, 'a', 1);
+}
+
+int ft_choose(t_pile **pile_a, t_pile **pile_b, t_pile *node)
+{
+    int		size_b;
+	int		size_a;
+
+	size_b = ft_pilesize(*pile_b);
+	size_a = ft_pilesize(*pile_a);
+    if (node->position <= size_b / 2 && node->target->position <= size_a / 2)
+        return (1);
+    if (node->position > size_b / 2 && node->target->position > size_a / 2)
+        return (1);
+    return (0);
 }
